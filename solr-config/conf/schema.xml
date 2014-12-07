@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+
+
+<schema name="testcore" version="0.1">
+
+  <copyField source="id" dest="filepath"/>
+
+  <!-- fieldtypes -->
+  <fieldtype name="string"  class="solr.StrField" sortMissingLast="true" omitNorms="true"/>
+  <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
+
+  <fieldType name="metadata" class="solr.TextField" positionIncrementGap="100">
+    <analyzer type="index">
+      <tokenizer class="solr.StandardTokenizerFactory"/>
+      <filter class="solr.LowerCaseFilterFactory"/>
+    </analyzer>
+    <analyzer type="query">
+      <tokenizer class="solr.StandardTokenizerFactory"/>
+      <filter class="solr.LowerCaseFilterFactory"/>
+    </analyzer>
+  </fieldType>
+
+  <!-- general -->
+  <field name="id"        type="string"   indexed="true"  stored="true"  multiValued="false" required="true"/>
+  <field name="type"      type="string"   indexed="true"  stored="true"  multiValued="false" />
+  <field name="name"      type="string"   indexed="true"  stored="true"  multiValued="false" />
+  <field name="_version_" type="long"     indexed="true"  stored="true"  multiValued="false"/>
+  <!-- specific -->
+  <field name="filepath"  type="string"   indexed="true"  stored="true"  multiValued="false" required="true"/>
+  <field name="filetype"  type="string"   indexed="true"  stored="true"  multiValued="false" required="true"/>
+  <field name="filesize"  type="long"     indexed="true"  stored="true"  multiValued="false" required="true"/>
+  <field name="metadata"  type="metadata" indexed="true"  stored="true"  multiValued="false" required="false"/>
+
+
+
+ <!-- field to use to determine and enforce document uniqueness. -->
+ <uniqueKey>id</uniqueKey>
+
+ <!-- field for the QueryParser to use when an explicit fieldname is absent -->
+ <defaultSearchField>name</defaultSearchField>
+
+ <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
+ <solrQueryParser defaultOperator="OR"/>
+</schema>
